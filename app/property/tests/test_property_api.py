@@ -221,3 +221,93 @@ class PrivatePropertiesAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertTrue(Property.objects.filter(id=property.id).exists())
+
+    def test_filter_property_by_name(self):
+        """Test returning properties with specific name."""
+        prop1 = create_property(name='Warsaw Hotel')
+        prop2 = create_property(name='Warsaw Stadium')
+        prop3 = create_property(name='Moscow Alert')
+        prop4 = create_property(name='Paris Amela')
+
+        res = self.client.get(PROPERTY_URL, {'name': 'Warsaw'})
+
+        serializer1 = PropertySerializer(prop1)
+        serializer2 = PropertySerializer(prop2)
+        serializer3 = PropertySerializer(prop3)
+        serializer4 = PropertySerializer(prop4)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3, res.data)
+        self.assertNotIn(serializer4, res.data)
+
+    def test_filter_property_by_location(self):
+        """Test returning properties with specific location."""
+        prop1 = create_property(location='Barcelona')
+        prop2 = create_property(location='Florida')
+        prop3 = create_property(location='Madrid')
+        prop4 = create_property(location='Barcelona')
+
+        res = self.client.get(PROPERTY_URL, {'location': 'Barcelona'})
+
+        serializer1 = PropertySerializer(prop1)
+        serializer2 = PropertySerializer(prop2)
+        serializer3 = PropertySerializer(prop3)
+        serializer4 = PropertySerializer(prop4)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer4.data, res.data)
+        self.assertNotIn(serializer3, res.data)
+        self.assertNotIn(serializer2, res.data)
+
+    def test_filter_properties_by_price_range(self):
+        """Test returning properties within a price range."""
+        prop1 = create_property(owner=self.user, price=Decimal('50.00'))
+        prop2 = create_property(owner=self.user, price=Decimal('150.00'))
+        prop3 = create_property(owner=self.user, price=Decimal('250.00'))
+        prop4 = create_property(owner=self.user, price=Decimal('300.00'))
+
+        res = self.client.get(PROPERTY_URL, {'price_min': 51, 'price_max': 270})
+
+        serializer1 = PropertySerializer(prop1)
+        serializer2 = PropertySerializer(prop2)
+        serializer3 = PropertySerializer(prop3)
+        serializer4 = PropertySerializer(prop4)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertNotIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertIn(serializer3.data, res.data)
+        self.assertNotIn(serializer4.data, res.data)
+
+    def test_sort_properties_by_name(self):
+        """Test sorting properties by name."""
+        prop1 = create_property(location='Barcelona')
+        prop2 = create_property(location='Florida')
+        prop3 = create_property(location='Madrid')
+        prop4 = create_property(location='Barcelona')
+
+        res = self.client.get(PROPERTY_URL, {'ordering': 'name'})
+
+        properties = Property.objects.all().order_by('name')
+        serializer = PropertySerializer(properties, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_sort_properties_by_price(self):
+        """Test sorting properties by price."""
+        prop1 = create_property(price=Decimal('2.5'))
+        prop2 = create_property(price=Decimal('1.5'))
+        prop3 = create_property(price=Decimal('6.5'))
+        prop4 = create_property(price=Decimal('90.0'))
+
+        res = self.client.get(PROPERTY_URL, {'ordering': 'price'})
+
+        properties = Property.objects.all().order_by('price')
+        serializer = PropertySerializer(properties, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)

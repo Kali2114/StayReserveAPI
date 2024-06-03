@@ -2,10 +2,14 @@
 Views for property API.
 """
 from rest_framework import viewsets
+from rest_framework.filters import OrderingFilter
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from property import models, serializers
+from property.filters import PropertyFilter
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -14,6 +18,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
     queryset = models.Property.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = PropertyFilter
+    ordering_fields = ['name', 'location', 'price']
 
     def get_queryset(self):
         """Retrieve properties for authenticated user."""
