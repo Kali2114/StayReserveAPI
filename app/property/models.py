@@ -4,8 +4,6 @@ Properties models.
 from django.conf import settings
 from django.db import models
 
-from rest_framework.exceptions import ValidationError
-
 
 class Property(models.Model):
     """Property object."""

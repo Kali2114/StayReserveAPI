@@ -4,6 +4,7 @@ Serializers for property API View.
 from rest_framework import serializers
 
 from property.models import Property
+from reservation.serializers import ReservationSerializer
 
 
 class PropertySerializer(serializers.ModelSerializer):
@@ -22,6 +23,7 @@ class PropertySerializer(serializers.ModelSerializer):
 
 class PropertyDetailSerializer(PropertySerializer):
     """Serializer for detail property."""
+    reservations = ReservationSerializer(many=True, read_only=True, source='reservation')
 
     class Meta(PropertySerializer.Meta):
-        fields = PropertySerializer.Meta.fields + ['description']
+        fields = PropertySerializer.Meta.fields + ['description', 'reservations']

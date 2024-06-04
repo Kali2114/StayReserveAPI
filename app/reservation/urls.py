@@ -1,18 +1,17 @@
 """
-URL mappings for the property app.
+URL mappings for the reservation app.
 """
 from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from property import views
+from reservation import views
 
 
 router = DefaultRouter()
-router.register('properties', views.PropertyViewSet)
-router.register
+router.register('reservations', views.ReservationViewSet)
 
-app_name = 'property'
+app_name = 'reservation'
 
 urlpatterns = [
     path('', include(router.urls))
