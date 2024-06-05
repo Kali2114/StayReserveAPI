@@ -34,5 +34,5 @@ urlpatterns = [
     ),
     path('api/user/', include('user.urls')),
     path('api/property/', include('property.urls')),
-    path('api/reservation', include('reservation.urls'))
+    path('api/reservation', include('reservation.urls')),
 ]

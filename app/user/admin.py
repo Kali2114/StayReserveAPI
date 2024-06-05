@@ -8,6 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from user.models import User
 from property.models import Property
+from reservation.models import Reservation
+from review.models import Review
 
 
 class UserAdmin(BaseUserAdmin):
@@ -51,3 +53,5 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Property)
+admin.site.register(Reservation)
+admin.site.register(Review)

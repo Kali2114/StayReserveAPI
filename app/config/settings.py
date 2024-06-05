@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'config',
     'user',
     'reservation',
+    'review',
     'property',
     "rest_framework.authtoken",
     "django_filters",

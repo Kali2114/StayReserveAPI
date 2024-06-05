@@ -14,7 +14,7 @@ class ReservationViewSet(mixins.CreateModelMixin,
                          mixins.ListModelMixin,
                          mixins.DestroyModelMixin,
                          viewsets.GenericViewSet):
-    """Manage reservations it the database."""
+    """Manage reservations in the database."""
     serializer_class = serializers.ReservationSerializer
     queryset = models.Reservation.objects.all()
     authentication_classes = [TokenAuthentication]

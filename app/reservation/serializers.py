@@ -3,8 +3,6 @@ Serializers for reservation API View.
 """
 from rest_framework import serializers
 
-from datetime import date, timedelta
-
 from reservation.models import Reservation
 
 
