@@ -1,6 +1,7 @@
 """
 Tests for payment model.
 """
+
 from decimal import Decimal
 
 from django.test import TestCase
@@ -19,14 +20,13 @@ class PaymentModelTest(TestCase):
     def test_create_payment(self):
         """Test creating a payment is successful."""
         user = get_user_model().objects.create_user(
-            email='Test@example.com',
-            password="Test123"
+            email="Test@example.com", password="Test123"
         )
         property = Property.objects.create(
-            name='Warsaw Hotel',
-            price=Decimal('3.5'),
-            description='Test Description',
-            owner=user
+            name="Warsaw Hotel",
+            price=Decimal("3.5"),
+            description="Test Description",
+            owner=user,
         )
         reservation = Reservation.objects.create(
             property=property,
@@ -35,9 +35,10 @@ class PaymentModelTest(TestCase):
             end_date=date.today(),
         )
         payment = Payment.objects.create(
-            reservation=reservation,
-            amount=225.50,
-            payment_method='PayPal'
+            reservation=reservation, amount=225.50, payment_method="PayPal"
         )
 
-        self.assertEqual(str(payment), f'{payment.pk} for {reservation} by {reservation.user}, cost: {payment.amount}')
+        self.assertEqual(
+            str(payment),
+            f"{payment.pk} for {reservation} by {reservation.user}, cost: {payment.amount}",
+        )

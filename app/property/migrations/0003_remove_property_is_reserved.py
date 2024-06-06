@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('property', '0002_property_delete_properties'),
+        ("property", "0002_property_delete_properties"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='property',
-            name='is_reserved',
+            model_name="property",
+            name="is_reserved",
         ),
     ]

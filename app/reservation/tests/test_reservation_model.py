@@ -1,6 +1,7 @@
 """
 Test for reservation model.
 """
+
 from decimal import Decimal
 
 from django.test import TestCase
@@ -18,14 +19,14 @@ class ReservationModelTest(TestCase):
     def test_create_reservation(self):
         """Test creating a reservation is successful."""
         user = get_user_model().objects.create(
-            email='Test@example.com',
-            password='Test123',
+            email="Test@example.com",
+            password="Test123",
         )
         property = Property.objects.create(
-            name='Warsaw Hotel',
-            price=Decimal('3.5'),
-            description='Test Description',
-            owner=user
+            name="Warsaw Hotel",
+            price=Decimal("3.5"),
+            description="Test Description",
+            owner=user,
         )
         reservation = Reservation.objects.create(
             property=property,
@@ -34,4 +35,4 @@ class ReservationModelTest(TestCase):
             end_date=date.today(),
         )
 
-        self.assertEqual(str(reservation), f'Reservation by {user} for {property}')
+        self.assertEqual(str(reservation), f"Reservation by {user} for {property}")
