@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from property.models import Property
 from reservation.serializers import ReservationSerializer
+from review.serializers import ReviewSerializer
 
 
 class PropertySerializer(serializers.ModelSerializer):
@@ -24,6 +25,7 @@ class PropertySerializer(serializers.ModelSerializer):
 class PropertyDetailSerializer(PropertySerializer):
     """Serializer for detail property."""
     reservations = ReservationSerializer(many=True, read_only=True, source='reservation')
+    reviews = ReviewSerializer(many=True, read_only=True)
 
     class Meta(PropertySerializer.Meta):
-        fields = PropertySerializer.Meta.fields + ['description', 'reservations']
+        fields = PropertySerializer.Meta.fields + ['description', 'reservations', 'reviews']
